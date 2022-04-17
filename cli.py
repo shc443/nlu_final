@@ -75,7 +75,7 @@ new_model = NLU_Toxic_classifier(n_classes=2,
                               n_warmup_steps=warmup_steps,
                               n_training_steps=total_training_steps)
 
-trainer = pl.Trainer(max_epochs=N_EPOCHS, gpus=4, progress_bar_refresh_rate=3)
+trainer = pl.Trainer(max_epochs=N_EPOCHS, gpus=1, progress_bar_refresh_rate=3)
 
 trainer.fit(new_model, data_module)
 
