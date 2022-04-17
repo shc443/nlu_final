@@ -39,7 +39,7 @@ class NLU_dataset(Dataset):
     def __getitem__(self, index):
         data_row = self.data.iloc[index]
 
-        text = data_row.text_column
+        text = data_row.Text
         labels = data_row.Label
 
         encoding = self.tokenizer.encode_plus(text,
@@ -115,6 +115,8 @@ class NLU_Toxic_classifier(pl.LightningModule):
         super().__init__()
         self.config = AutoConfig.from_pretrained("microsoft/deberta-base", output_hidden_states=True)
         self.model = AutoModelForMaskedLM.from_pretrained("microsoft/deberta-base", config=self.config)
+        self.model.resize_token_embeddings(self.config.vocab_size+1) #[TOXIC] token added
+
         self.classifier = nn.Linear(self.config.hidden_size, n_classes)
         self.n_training_steps = n_training_steps
         self.n_warmup_steps = n_warmup_steps
